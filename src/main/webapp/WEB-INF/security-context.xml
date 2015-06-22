@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/security
+http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    <security:global-method-security secured-annotations="enabled" />
+    
+   <security:http pattern="/sms/login" security="none"/>
+	
+	<security:http auto-config="true">
+	 	
+			  
+	 <security:form-login login-page="/sms/login" authentication-failure-url="/sms/loginfailed" default-target-url="/sms/default"/>
+		
+	<security:logout logout-success-url="/sms/login" />
+		
+		
+	<security:intercept-url pattern="/sms/admin"  requires-channel="https" access="ROLE_ADMIN"/>
+		<security:intercept-url pattern="/sms/**"  requires-channel="https" /> 
+		
+			
+	  	<security:access-denied-handler error-page="/sms/accessDenied"/>
+		
+		
+		
+	</security:http>
+	
+	
+	
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:user-service>
+				<security:user authorities="ROLE_CLIENT" name="elena"
+					password="mp" />
+				<security:user authorities="ROLE_CLIENT" name="root"
+					password="root" />
+					
+				<security:user authorities="ROLE_ADMIN" name="admin" password="admin" />
+					
+			</security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager>
+</beans>
